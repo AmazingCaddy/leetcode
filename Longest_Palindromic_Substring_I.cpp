@@ -1,9 +1,3 @@
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include <vector>
-using namespace std;
-
 class Solution {
 public:
 	void test () {
@@ -70,10 +64,3 @@ public:
 		return s.substr(ans_start, ans);
 	}
 };
-
-int main (int argc, char* argv[]) {
-	Solution *sol = new Solution();
-	sol -> test();
-	delete sol;
-	return 0;
-}
