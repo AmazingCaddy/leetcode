@@ -1,8 +1,3 @@
-#include <string>
-#include <iostream>
-#include <vector>
-using namespace std;
-
 class Solution {
 public:
 	void test() {
@@ -39,10 +34,3 @@ public:
 		return res;
 	}
 };
-
-int main (int argc, char *argv[]) {
-	Solution *sol = new Solution();
-	sol->test();
-	delete sol;
-	return 0;
-}
