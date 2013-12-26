@@ -1,11 +1,3 @@
-#include <string>
-#include <iostream>
-#include <vector>
-#include <set>
-#include <map>
-#include <algorithm>
-using namespace std;
-
 class Solution {
 public:
 	void test() {
@@ -57,10 +49,3 @@ public:
 		return res;
 	}
 };
-
-int main (int argc, char *argv[]) {
-	Solution *sol = new Solution();
-	sol->test();
-	delete sol;
-	return 0;
-}
