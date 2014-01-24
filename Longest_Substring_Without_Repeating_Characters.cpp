@@ -1,9 +1,3 @@
-#include <string>
-#include <algorithm>
-#include <iostream>
-#include <string.h>
-using namespace std;
-
 class Solution {
 public:
 	int lengthOfLongestSubstring(string s) {
@@ -27,12 +21,3 @@ public:
 		return ans;
 	}
 };
-
-int main () {
-	string s;
-	cin >> s;
-	Solution * solution = new Solution();
-	cout << solution -> lengthOfLongestSubstring(s) << endl;
-	delete solution;
-	return 0;
-}
