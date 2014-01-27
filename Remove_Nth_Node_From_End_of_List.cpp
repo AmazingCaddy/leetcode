@@ -1,4 +1,4 @@
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #include <iostream>
@@ -14,14 +14,6 @@ struct ListNode {
 };
 #endif
 
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *	 int val;
- *	 ListNode *next;
- *	 ListNode(int x) : val(x), next(NULL) {}
- * };
- */
 class Solution {
 private:
 	int get_list_len (ListNode *head) {
