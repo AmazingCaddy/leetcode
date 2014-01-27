@@ -1,4 +1,4 @@
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #include <iostream>
@@ -44,13 +44,15 @@ public:
 	void test() {
 		char * haystack[] = {
 			"abcdef",
-			"sdassdasd"
+			"sdassdasd",
+			""
 		};
 		char * needle[] = {
 			"def",
-			""
+			"",
+			"as"
 		};
-		int n = 2;
+		int n = 3;
 		for (int i = 0; i < n; i ++) {
 			cout << (this -> strStr(haystack[i], needle[i]) - haystack[i]) << "\n";
 		}
