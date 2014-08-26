@@ -13,7 +13,6 @@
 #include <iomanip>
 #include <map>
 #include <unordered_set>
-#include <sstream>
 using namespace std;
 
 struct ListNode {
@@ -32,37 +31,23 @@ const double pi = acos(-1.0);
 class Solution {
 public:
 	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
-		}
+		int nums[] = {1, 2, 3, 1, 2, 3, 1, 2, 3, 4};
+		int n = 10;
+		int ans = this->singleNumber(nums, 10);
+		cout << ans << "\n";
 	}
 
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
-		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
-			} else {
-				cnt ++;
-			}
+	// simulation of ternary addition
+	int singleNumber(int A[], int n) {
+		int one = 0, two = 0, three = 0;
+		for (int i = 0; i < n; i ++) {
+			two |= (one & A[i]);
+			one ^= A[i];
+			three = ~(one & two);
+			one &= three;
+			two &= three;
 		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
-	}
-
-	string countAndSay(int n) {
-		string s = "1";
-		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
-		}
-		return s;
+		return one;
 	}
 };
 

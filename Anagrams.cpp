@@ -13,7 +13,6 @@
 #include <iomanip>
 #include <map>
 #include <unordered_set>
-#include <sstream>
 using namespace std;
 
 struct ListNode {
@@ -32,37 +31,31 @@ const double pi = acos(-1.0);
 class Solution {
 public:
 	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
+		vector<string> strs{"", "abc", "xxx", "yy", "tea", "ate", "sdsad"};
+		vector<string> ans = this->anagrams(strs);
+		for (int i = 0; i < ans.size(); i ++) {
+			cout << ans[i] << "\n";
 		}
 	}
 
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
+	vector<string> anagrams(vector<string> &strs) {
+		vector<string> ans;
+		map<string, int> visit;
+		int sz = strs.size();
 		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
+			string s = strs[i];
+			sort(s.begin(), s.end());
+			if (visit.find(s) == visit.end()) {
+				visit[s] = i;
 			} else {
-				cnt ++;
+				if (visit[s] >= 0) {
+					ans.push_back(strs[visit[s]]);
+					visit[s] = -1;
+				}
+				ans.push_back(strs[i]);
 			}
 		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
-	}
-
-	string countAndSay(int n) {
-		string s = "1";
-		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
-		}
-		return s;
+		return ans;
 	}
 };
 

@@ -13,7 +13,6 @@
 #include <iomanip>
 #include <map>
 #include <unordered_set>
-#include <sstream>
 using namespace std;
 
 struct ListNode {
@@ -32,37 +31,31 @@ const double pi = acos(-1.0);
 class Solution {
 public:
 	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
+		int A[] = {-1, 4, 8, 10, 0, 0, 0};
+		int B[] = {-4, 2, 3};
+		int m = 4, n = 3;
+		this->merge(A, m, B, n);
+		for (int i = 0; i < n + m; i ++) {
+			cout << A[i] << "\n";
 		}
 	}
 
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
-		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
-			} else {
-				cnt ++;
+	void merge(int A[], int m, int B[], int n) {
+		int i, j, k;
+		for (i = m - 1, j = n - 1, k = n + m - 1; k >= 0; k --) {
+			if (i >= 0 && j >= 0) {
+				if (A[i] < B[j]) {
+					A[k] = B[j];
+					j --;
+				} else {
+					A[k] = A[i];
+					i --;
+				}
+			} else if (j >= 0) {
+				A[k] = B[j];
+				j --;
 			}
 		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
-	}
-
-	string countAndSay(int n) {
-		string s = "1";
-		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
-		}
-		return s;
 	}
 };
 

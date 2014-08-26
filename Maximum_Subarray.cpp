@@ -13,7 +13,6 @@
 #include <iomanip>
 #include <map>
 #include <unordered_set>
-#include <sstream>
 using namespace std;
 
 struct ListNode {
@@ -23,46 +22,41 @@ struct ListNode {
 };
 #endif
 
-const int maxn = 10004;
+const int maxn = 104;
 const int inf = 0x3f3f3f3f;
 
 const double eps = 1e-8;
 const double pi = acos(-1.0);
 
 class Solution {
-public:
-	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
-		}
-	}
-
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
-		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
-			} else {
-				cnt ++;
+private:
+	vector<int> row;
+	bool isValid(int dep) {
+		for (int i = 0; i < dep; i ++) {
+			// two queues in the same column or diagonal
+			if (row[i] == row[dep] || abs(row[i] - row[dep]) == dep - i) {
+				return false;
 			}
 		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
+		return true;
+	}
+public:
+	void test() {
+		int num[] = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+		int n = 9;
+		int ans = this->maxSubArray(num, n);
+		cout << ans << "\n";
 	}
 
-	string countAndSay(int n) {
-		string s = "1";
+	int maxSubArray(int A[], int n) {
+		vector<int>dp(n + 1);
+		dp[0] = A[0];
+		int ans = dp[0];
 		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
+			dp[i] = max(dp[i - 1] + A[i], A[i]);
+			ans = max(ans, dp[i]);
 		}
-		return s;
+		return ans;
 	}
 };
 

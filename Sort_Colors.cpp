@@ -13,7 +13,6 @@
 #include <iomanip>
 #include <map>
 #include <unordered_set>
-#include <sstream>
 using namespace std;
 
 struct ListNode {
@@ -29,40 +28,38 @@ const int inf = 0x3f3f3f3f;
 const double eps = 1e-8;
 const double pi = acos(-1.0);
 
+#define RED 0
+#define WHITE 1
+#define BLUE 2
+
 class Solution {
 public:
 	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
+		int nums[] = {2, 0, 0, 2};
+		int n = 4;
+		this->sortColors(nums, n);
+		for (int i = 0; i < n; i ++) {
+			cout << nums[i] << " ";
 		}
+		cout << "\n";
 	}
-
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
-		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
+	
+	int sortColors(int A[], int n) {
+		int white_start = 0, white_end = 0, blue_start = n - 1;
+		while (white_end <= blue_start) {
+			if (A[white_end] == RED) {
+				// 保证交换过来的是 white 也就是 1
+				swap(A[white_end], A[white_start]);
+				white_start ++;
+				white_end ++;
+			} else if (A[white_end] == BLUE) {
+				// white_end 保持不动，因为不确定blue_start位置交换过来的内容
+				swap(A[white_end], A[blue_start]);
+				blue_start --;
 			} else {
-				cnt ++;
+				white_end ++;
 			}
 		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
-	}
-
-	string countAndSay(int n) {
-		string s = "1";
-		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
-		}
-		return s;
 	}
 };
 

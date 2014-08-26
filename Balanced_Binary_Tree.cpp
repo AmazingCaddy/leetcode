@@ -13,7 +13,7 @@
 #include <iomanip>
 #include <map>
 #include <unordered_set>
-#include <sstream>
+#include <stack>
 using namespace std;
 
 struct ListNode {
@@ -21,48 +21,44 @@ struct ListNode {
 	ListNode *next;
 	ListNode(int x) : val(x), next(NULL) {}
 };
+
+struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
 #endif
 
-const int maxn = 10004;
 const int inf = 0x3f3f3f3f;
-
 const double eps = 1e-8;
 const double pi = acos(-1.0);
+const int maxn = 10004;
+TreeNode* idx[maxn];
 
 class Solution {
 public:
+	int is_blanced(TreeNode* root) {
+		if (root == NULL) {
+			return 0;
+		}
+		int left = this->is_blanced(root->left);
+		int right = this->is_blanced(root->right);
+		if (left == -1 || right == -1) {
+			return -1;
+		}
+		if (abs(left - right) > 1) {
+			return -1;
+		}
+		return max(left, right) + 1;
+	}
+
 	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
-		}
 	}
-
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
-		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
-			} else {
-				cnt ++;
-			}
-		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
-	}
-
-	string countAndSay(int n) {
-		string s = "1";
-		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
-		}
-		return s;
+	
+	bool isBalanced(TreeNode *root) {
+		return this->is_blanced(root) != -1;
 	}
 };
 

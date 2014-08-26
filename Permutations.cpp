@@ -13,7 +13,6 @@
 #include <iomanip>
 #include <map>
 #include <unordered_set>
-#include <sstream>
 using namespace std;
 
 struct ListNode {
@@ -32,37 +31,32 @@ const double pi = acos(-1.0);
 class Solution {
 public:
 	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
-		}
-	}
-
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
-		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
-			} else {
-				cnt ++;
+		vector<int> num{1, 2, 3};
+		vector<vector<int> > ans = this->permute(num);
+		for (int i = 0; i < ans.size(); i ++) {
+			for (int j = 0; j < ans[i].size(); j ++) {
+				cout << ans[i][j] << " ";
 			}
+			cout << "\n";
 		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
 	}
 
-	string countAndSay(int n) {
-		string s = "1";
-		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
+	void dfs(int dep, vector<int> &num, vector<vector<int> > &ans) {
+		if (dep == num.size()) {
+			ans.push_back(num);
+			return;
 		}
-		return s;
+		for (int i = dep; i < num.size(); i ++) {
+			swap(num[dep], num[i]);
+			dfs(dep + 1, num, ans);
+			swap(num[dep], num[i]);
+		}
+	}
+	
+	vector<vector<int> > permute(vector<int> &num) {
+		vector<vector<int> > ans;
+		this->dfs(0, num, ans);
+		return ans;
 	}
 };
 

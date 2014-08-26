@@ -13,7 +13,6 @@
 #include <iomanip>
 #include <map>
 #include <unordered_set>
-#include <sstream>
 using namespace std;
 
 struct ListNode {
@@ -23,7 +22,7 @@ struct ListNode {
 };
 #endif
 
-const int maxn = 10004;
+const int maxn = 104;
 const int inf = 0x3f3f3f3f;
 
 const double eps = 1e-8;
@@ -32,37 +31,21 @@ const double pi = acos(-1.0);
 class Solution {
 public:
 	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
-		}
+		int num[] = {1, 1, 1, 0};
+		int n = 4;
+		int ans = this->canJump(num, n);
+		cout << ans << "\n";
 	}
 
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
-		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
-			} else {
-				cnt ++;
+	bool canJump(int A[], int n) {
+		int r_max = A[0];
+		for (int i = 1; i < n; i ++) {
+			if (i <= r_max) {
+				r_max = max(r_max, i + A[i]);
 			}
 		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
-	}
-
-	string countAndSay(int n) {
-		string s = "1";
-		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
-		}
-		return s;
+	//	cout << r_max << "\n";
+		return r_max >= n - 1;
 	}
 };
 

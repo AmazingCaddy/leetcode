@@ -13,7 +13,6 @@
 #include <iomanip>
 #include <map>
 #include <unordered_set>
-#include <sstream>
 using namespace std;
 
 struct ListNode {
@@ -32,37 +31,25 @@ const double pi = acos(-1.0);
 class Solution {
 public:
 	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
+		vector<int> nums{0, 1, 2, 3};
+		for (int i = 0; i < nums.size(); i ++) {
+			vector<int> ans = this->grayCode(nums[i]);
+			for (int j = 0; j < ans.size(); j ++) {
+				cout << ans[j] << " ";
+			}
+			cout << "\n";
 		}
 	}
 
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
-		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
-			} else {
-				cnt ++;
+	vector<int> grayCode(int n) {
+		vector<int> ans{0};
+		for (int i = 0; i < n; i ++) {
+			int mask = 1 << i;
+			for (int j = 0; j < mask; j ++) {
+				ans.push_back(ans[mask - 1 - j] | mask);
 			}
 		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
-	}
-
-	string countAndSay(int n) {
-		string s = "1";
-		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
-		}
-		return s;
+		return ans;
 	}
 };
 

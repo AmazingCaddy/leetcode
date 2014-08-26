@@ -31,38 +31,33 @@ const double pi = acos(-1.0);
 
 class Solution {
 public:
-	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
-		}
+	void test () {
+		int A[] = {0,1,0,2,1,0,1,3,2,1,2,1};
+		int n = 12;
+		int ans = this->trap(A, n);
+		cout << ans << "\n";
 	}
-
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
-		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
-			} else {
-				cnt ++;
+	int trap(int A[], int n) {
+		int* l = new int[n], *r = new int[n];
+		int l_max = A[0];
+		for (int i = 0; i < n; i ++) {
+			if (A[i] >= l_max) {
+				l_max = A[i];
 			}
+			l[i] = l_max;
 		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
-	}
-
-	string countAndSay(int n) {
-		string s = "1";
-		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
+		int r_max = A[n - 1];
+		for (int i = n - 1; i >= 0; i --) {
+			if (A[i] >= r_max) {
+				r_max = A[i];
+			}
+			r[i] = r_max;
 		}
-		return s;
+		int ans = 0;
+		for (int i = 0; i < n; i ++) {
+			ans += (min(l[i], r[i]) - A[i]);
+		}
+		return ans;
 	}
 };
 

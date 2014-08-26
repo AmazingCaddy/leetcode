@@ -13,7 +13,7 @@
 #include <iomanip>
 #include <map>
 #include <unordered_set>
-#include <sstream>
+#include <stack>
 using namespace std;
 
 struct ListNode {
@@ -21,48 +21,39 @@ struct ListNode {
 	ListNode *next;
 	ListNode(int x) : val(x), next(NULL) {}
 };
+
+struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
 #endif
 
-const int maxn = 10004;
 const int inf = 0x3f3f3f3f;
-
 const double eps = 1e-8;
 const double pi = acos(-1.0);
+const int maxn = 10004;
+TreeNode* idx[maxn];
 
 class Solution {
 public:
 	void test() {
-		vector<int> ns{0, 1, 2, 3, 4, 5};
-		for (int i = 0; i < ns.size(); i ++) {
-			cout << this->countAndSay(ns[i]) << "\n";
+		vector<int> nums{0, 1, 2, 3, 4, 5};
+		for (int i = 0; i < nums.size(); i ++) {
+			cout << this->climbStairs(nums[i]) << "\n";
 		}
 	}
 
-	string gao(string in) {
-		int sz = in.size();
-		stringstream ss;
-		int cnt = 0;
-		char last = in[0];
-		for (int i = 0; i < sz; i ++) {
-			if (in[i] != last) {
-				ss << cnt << last;
-				last = in[i];
-				cnt = 1;
-			} else {
-				cnt ++;
-			}
+	int climbStairs(int n) {
+		int fn[n + 1];
+		fn[0] = 1;
+		fn[1] = 1;
+		for (int i = 2; i <= n; i ++) {
+			fn[i] = fn[i - 1] + fn[i - 2];
 		}
-		ss << cnt << last;
-		//cout << ss.str() << "\n";
-		return ss.str();
-	}
-
-	string countAndSay(int n) {
-		string s = "1";
-		for (int i = 1; i < n; i ++) {
-			s = this->gao(s);
-		}
-		return s;
+		return fn[n];
 	}
 };
 
