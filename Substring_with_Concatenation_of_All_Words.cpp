@@ -18,24 +18,6 @@ struct ListNode {
 #endif
 
 class Solution {
-private:
-	bool check(map<string, int> &hashMap, const string &S, int start, int len, int sz) {
-		//cout << "len = " << len << " sz = " << sz << "\n";
-		map<string, int> cur;
-		for (int j = 0; j < len * sz; j += len) {
-			//cout << start + j << "\n";
-			string sub_str = S.substr(start + j, len);
-			//cout << sub_str << "\n";
-			if (hashMap.find(sub_str) == hashMap.end()) {
-				return false;
-			}
-			cur[sub_str] ++;
-			if (cur[sub_str] > hashMap[sub_str]) {
-				return false;
-			}
-		}
-		return true;
-	}
 public:
 	void test () {
 		string S = "barfoothefoobarman";
@@ -51,29 +33,57 @@ public:
 	}
 
 	vector<int> findSubstring(string S, vector<string> &L) {
-		int sz = L.size();
-		vector<int> ans;
-		if (sz == 0) {
-			return ans;
+		int m = S.size(), n = L.size(), len = L[0].size();
+		map<string, int> ids;
+ 
+		vector<int> need(n, 0);
+		for (int i = 0; i < n; ++i) {
+			if (!ids.count(L[i])) {
+				ids[L[i]] = i;
+			}
+			need[ids[L[i]]] ++;
 		}
-		int len = L[0].size();
-		int s_len = S.size();
-		if (s_len < len * sz) {
-			return ans;
+ 
+		vector<int> s(m, -1);
+		for (int i = 0; i < m - len + 1; ++i) {
+			string key = S.substr(i, len);
+			s[i] = ids.count(key) ? ids[key] : -1;
 		}
-		map<string, int> hashMap;
-		for (int i = 0; i < sz; i ++) {
-			hashMap[L[i]] ++;
-		}
-		//for (map<string, int>::iterator iter = hashMap.begin(); iter != hashMap.end(); iter ++) {
-		//	cout << iter->first << " " << iter-> second << "\n";		
-		//}
-		for (int i = 0; i + len * sz - 1 < s_len; i ++) {
-			if (this -> check(hashMap, S, i, len, sz)) {
-				ans.push_back(i);
+ 
+		vector<int> ret;
+		for (int offset = 0; offset < len; ++offset) {
+			vector<int> found(n, 0);
+			int count = 0, begin = offset;
+			for (int i = offset; i < m - len + 1; i += len) {
+				if (s[i] < 0) {
+					// recount
+					begin = i + len;
+					count = 0;
+					found.clear();
+					found.resize(n, 0);
+				} else {
+					int id = s[i];
+					found[id]++;
+					if (need[id] && found[id] <= need[id]) {
+						count++;
+					}
+ 
+					if (count == n) {
+						ret.push_back(begin);
+					}
+					// move current window
+					if ((i - begin) / len + 1 == n) {
+						id = s[begin];
+						if (need[id] && found[id] == need[id]){
+							count--;
+						}	
+						found[id]--;
+						begin += len;
+					}
+				}
 			}
 		}
-		return ans;
+		return ret;
 	}
 };
 
