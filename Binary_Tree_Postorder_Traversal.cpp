@@ -48,7 +48,7 @@ public:
 		}
 	}
 	void test() {
-		vector<int> t1{1, -1, 2, -1, -1, 3};
+		vector<int> t1{1,  3, 6,   4, -1, 8, 7,    -1, 5, -1, -1, -1, -1, 2};
 		TreeNode* root = make_tree(t1);
 		vector<int> ans = this->postorderTraversal(root);
 		this->print(ans);

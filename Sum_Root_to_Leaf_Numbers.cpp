@@ -39,20 +39,11 @@ TreeNode* idx[maxn];
 
 class Solution {
 public:
-	void print(const vector<int>& v) {
-		for (int i = 0; i < v.size(); i ++) {
-			if (i) {
-				cout << " ";
-			}
-			cout << v[i];
-		}
-	}
 	void test() {
-		vector<int> t1{1, 3, 6, 4, -1, 8, 7, -1, 5, -1, -1, 2};
+		vector<int> t1{1, 2};
 		TreeNode* root = make_tree(t1);
-		vector<int> ans = preorderTraversal(root);
-		this->print(ans);
-		cout << "\n";
+		int ans = this->sumNumbers(root);
+		cout << ans << "\n";
 		this->del_tree(root);
 	}
 
@@ -88,21 +79,23 @@ public:
 		}
 		return root;
 	}
-
-	vector<int> preorderTraversal(TreeNode *root) {
-		vector<int> ans;
-		stack<TreeNode*> treeStack;
-		TreeNode* cur = root;
-		while (cur || !treeStack.empty()) {
-			ans.push_back(cur->val);
-			treeStack.push(cur);
-			cur = cur->left;
-			while (!cur && !treeStack.empty()) {
-				cur = treeStack.top()->right;
-				treeStack.pop();
-			}
+	
+	void dfs(TreeNode *root, int number, int& total) {
+		if (root == NULL) {
+			return ;
 		}
-		return ans;
+		if (root->left == NULL && root->right == NULL) {
+			total = total + number * 10 + root->val;
+			return;
+		}
+		this->dfs(root->left, number * 10 + root->val, total);
+		this->dfs(root->right, number * 10 + root->val, total);
+	}
+
+	int sumNumbers(TreeNode *root) {
+		int total = 0;
+		this->dfs(root, 0, total);
+		return total;
 	}
 };
 

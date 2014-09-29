@@ -39,20 +39,16 @@ TreeNode* idx[maxn];
 
 class Solution {
 public:
-	void print(const vector<int>& v) {
-		for (int i = 0; i < v.size(); i ++) {
-			if (i) {
-				cout << " ";
-			}
-			cout << v[i];
-		}
-	}
 	void test() {
-		vector<int> t1{1, 3, 6, 4, -1, 8, 7, -1, 5, -1, -1, 2};
+		vector<int> t1{3, 9, 20, -1, -1, 15, 7};
 		TreeNode* root = make_tree(t1);
-		vector<int> ans = preorderTraversal(root);
-		this->print(ans);
-		cout << "\n";
+		vector<vector<int> > ans = this->levelOrderBottom(root);
+		for (int i = 0; i < ans.size(); i ++) {
+			for (int j = 0; j < ans[i].size(); j ++) {
+				cout << ans[i][j] << " ";
+			}
+			cout << "\n";
+		}
 		this->del_tree(root);
 	}
 
@@ -89,19 +85,30 @@ public:
 		return root;
 	}
 
-	vector<int> preorderTraversal(TreeNode *root) {
-		vector<int> ans;
-		stack<TreeNode*> treeStack;
-		TreeNode* cur = root;
-		while (cur || !treeStack.empty()) {
-			ans.push_back(cur->val);
-			treeStack.push(cur);
-			cur = cur->left;
-			while (!cur && !treeStack.empty()) {
-				cur = treeStack.top()->right;
-				treeStack.pop();
+	vector<vector<int> > levelOrderBottom(TreeNode *root) {
+		vector<vector<int> > ans;
+		if (root == NULL) {
+			return ans;
+		}
+		queue<pair<TreeNode*, int> > que;
+		que.push(make_pair(root, 0));
+		int last = -1;
+		while (!que.empty()) {
+			pair<TreeNode*, int> node = que.front();
+			que.pop();
+			if (node.second != last) {
+				ans.push_back(vector<int>());
+				last = node.second;
+			}
+			ans[last].push_back(node.first->val);
+			if (node.first->left) {
+				que.push(make_pair(node.first->left, node.second + 1));
+			}
+			if (node.first->right) {
+				que.push(make_pair(node.first->right, node.second + 1));
 			}
 		}
+		reverse(ans.begin(), ans.end());
 		return ans;
 	}
 };

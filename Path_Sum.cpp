@@ -48,11 +48,11 @@ public:
 		}
 	}
 	void test() {
-		vector<int> t1{1, 3, 6, 4, -1, 8, 7, -1, 5, -1, -1, 2};
+		vector<int> t1{5, 4, 8, 11, -1, 13, 4, 7, 2, -1, -1, -1, -1, -1, 1};
+//		vector<int> t1{1, 2};
 		TreeNode* root = make_tree(t1);
-		vector<int> ans = preorderTraversal(root);
-		this->print(ans);
-		cout << "\n";
+		int sum = 22;
+		cout << this->hasPathSum(root, sum) << "\n";
 		this->del_tree(root);
 	}
 
@@ -89,20 +89,15 @@ public:
 		return root;
 	}
 
-	vector<int> preorderTraversal(TreeNode *root) {
-		vector<int> ans;
-		stack<TreeNode*> treeStack;
-		TreeNode* cur = root;
-		while (cur || !treeStack.empty()) {
-			ans.push_back(cur->val);
-			treeStack.push(cur);
-			cur = cur->left;
-			while (!cur && !treeStack.empty()) {
-				cur = treeStack.top()->right;
-				treeStack.pop();
-			}
+	bool hasPathSum(TreeNode *root, int sum) {
+		if (root == NULL) {
+			return false;
 		}
-		return ans;
+		if (root->left == NULL && root->right == NULL && root->val == sum) {
+			return true;
+		}
+		int rest = sum - root->val;
+		return this->hasPathSum(root->left, rest) || this->hasPathSum(root->right, rest);
 	}
 };
 
