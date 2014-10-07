@@ -38,25 +38,7 @@ const int maxn = 10004;
 TreeNode* idx[maxn];
 
 class Solution {
-public:
-	void print(const vector<int>& v) {
-		for (int i = 0; i < v.size(); i ++) {
-			if (i) {
-				cout << " ";
-			}
-			cout << v[i];
-		}
-	}
-	void test() {
-		vector<int> t1{1, 2, 4, 3, -1, 5, -1, -1, 9, -1, -1, -1, 6, -1, -1, -1, -1, -1, -1, -1, 
-			-1, -1, -1, -1, -1, 7, 8};
-		TreeNode* root = make_tree(t1);
-		vector<int> ans = this->inorderTraversal(root);
-		this->print(ans);
-		cout << "\n";
-		this->del_tree(root);
-	}
-
+private:
 	void del_tree(TreeNode* root) {
 		if (root == NULL) {
 			return;
@@ -89,23 +71,43 @@ public:
 		}
 		return root;
 	}
+public:
+	void test() {
+		vector<int> preorder{1, 2, 3, 9, 4, 5, 6, 7, 8};
+		vector<int> inorder{3, 9, 2, 1, 5, 7, 6, 8, 4};
+		TreeNode* root = this->buildTree(preorder, inorder);
+		this->postorder(root);
+		cout << "\n";
+		this->del_tree(root);
+	}
 
-	vector<int> inorderTraversal(TreeNode *root) {
-		vector<int> ans;
-		stack<TreeNode*> treeStack;
-		TreeNode* cur = root;
-		while (cur || !treeStack.empty()) {
-			if (cur) {
-				treeStack.push(cur);
-				cur = cur->left;
-			} else {
-				cur = treeStack.top();
-				treeStack.pop();
-				ans.push_back(cur->val);
-				cur = cur->right;
-			}
+	void postorder(TreeNode *root) {
+		if (root == NULL) {
+			return;
 		}
-		return ans;
+		this->postorder(root->left);
+		this->postorder(root->right);
+		cout << root->val << " ";
+	}
+
+	TreeNode * dfs(const vector<int> &preorder, const vector<int> &inorder, int &depth_pre, int &depth_in, TreeNode* end) {
+		if (depth_pre >= preorder.size()) {
+			return NULL;
+		}
+		TreeNode *parent = new TreeNode(preorder[depth_pre ++]);
+		if (inorder[depth_in] != parent->val) {
+			parent->left = this->dfs(preorder, inorder, depth_pre, depth_in, parent);
+		}
+		depth_in ++;
+		if (end == NULL || inorder[depth_in] != end->val) {
+			parent->right = this->dfs(preorder, inorder, depth_pre, depth_in, end);
+		}
+		return parent;
+	}
+
+	TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder) {
+		int depth_pre = 0, depth_in = 0;
+		return this->dfs(preorder, inorder, depth_pre, depth_in, NULL);
 	}
 };
 

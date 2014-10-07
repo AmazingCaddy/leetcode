@@ -48,7 +48,8 @@ public:
 		}
 	}
 	void test() {
-		vector<int> t1{1, 3, 6, 4, -1, 8, 7, -1, 5, -1, -1, 2};
+		vector<int> t1{1, 2, 4, 3, -1, 5, -1, -1, 9, -1, -1, -1, 6, -1, -1, -1, -1, -1, -1, -1, 
+			-1, -1, -1, -1, -1, 7, 8};
 		TreeNode* root = make_tree(t1);
 		vector<int> ans = preorderTraversal(root);
 		this->print(ans);
