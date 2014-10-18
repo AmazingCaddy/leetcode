@@ -51,10 +51,10 @@ public:
 	ListNode * reorder(ListNode *head) {
 		ListNode * r = NULL, *p = head, *q = NULL;
 		while (p) {
-			q = p -> next;
-			p -> next = r;
-			r = p;
-			p = q;
+			q = p;
+			p = p->next;
+			q->next = r;
+			r = q;
 		}
 		return r;
 	}
