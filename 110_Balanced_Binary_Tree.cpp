@@ -39,12 +39,12 @@ TreeNode* idx[maxn];
 
 class Solution {
 public:
-	int is_blanced(TreeNode* root) {
+	int is_balanced(TreeNode* root) {
 		if (root == NULL) {
 			return 0;
 		}
-		int left = this->is_blanced(root->left);
-		int right = this->is_blanced(root->right);
+		int left = this->is_balanced(root->left);
+		int right = this->is_balanced(root->right);
 		if (left == -1 || right == -1) {
 			return -1;
 		}
@@ -58,7 +58,7 @@ public:
 	}
 	
 	bool isBalanced(TreeNode *root) {
-		return this->is_blanced(root) != -1;
+		return this->is_balanced(root) != -1;
 	}
 };
 
